@@ -1,12 +1,12 @@
-const { cars, size } = require("../models");
+const { Cars, Size } = require("../models");
 
 module.exports = {
   create(createArgs) {
-    return cars.create(createArgs);
+    return Cars.create(createArgs);
   },
 
   update(carId, updateArgs) {
-    return cars.update(updateArgs, {
+    return Cars.update(updateArgs, {
       where: {
         id: carId,
       },
@@ -14,18 +14,18 @@ module.exports = {
   },
 
   delete(carId) {
-    return cars.destroy({ where: { id: carId } });
+    return Cars.destroy({ where: { id: carId } });
   },
 
   findAll() {
-    return cars.findAll({ include: size });
+    return Cars.findAll({ include: Size });
   },
 
   findById(carId) {
-    return cars.findByPk(carId, { include: size });
+    return Cars.findByPk(carId, { include: Size });
   },
 
   findBySize(sizeId) {
-    return cars.findAll({ include: size, where: { sizeId: sizeId } });
+    return Cars.findAll({ include: Size, where: { sizeId: sizeId } });
   },
 };

@@ -12,15 +12,15 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
-    return queryInterface.bulkInsert("sizes", [
+    return queryInterface.bulkInsert("Roles", [
       {
-        size: "Small",
+        role: "superadmin",
       },
       {
-        size: "Medium",
+        role: "admin",
       },
       {
-        size: "Large",
+        role: "member",
       },
     ]);
   },

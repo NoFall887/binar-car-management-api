@@ -12,6 +12,16 @@ module.exports = {
      *   isBetaMember: false
      * }], {});
      */
+    return queryInterface.bulkInsert("Users", [
+      {
+        email: "superadmin@admin",
+        password:
+          "$2a$10$yrUg8NEZIz7saetKspZGgO/bj6vdoTD0ziC5RJDZ9wzqR9JCRBDhO", // password is 'admin'
+        roleId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ]);
   },
 
   async down(queryInterface, Sequelize) {
