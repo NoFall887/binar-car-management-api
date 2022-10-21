@@ -1,0 +1,608 @@
+{
+  "openapi" : "3.0.0",
+  "info" : {
+    "description" : "Binar car management API",
+    "version" : "1.0.0",
+    "title" : "Binar car management API"
+  },
+  "tags" : [ {
+    "name" : "Cars",
+    "description" : "Cars data management"
+  }, {
+    "name" : "Users",
+    "description" : "Users data management"
+  } ],
+  "paths" : {
+    "/cars" : {
+      "get" : {
+        "tags" : [ "Cars" ],
+        "summary" : "Get all cars",
+        "operationId" : "getAllCars",
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/GetCarsResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "Cars" ],
+        "summary" : "Create new car data",
+        "operationId" : "createCar",
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/PostPutCarRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/PostPutCarResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "Cars" ],
+        "summary" : "Update car data",
+        "operationId" : "updateCar",
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/PostPutCarRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/PostPutCarResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      }
+    },
+    "/cars/{id}" : {
+      "delete" : {
+        "tags" : [ "Cars" ],
+        "summary" : "Delete car data",
+        "operationId" : "deleteCar",
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "description" : "Car id",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "example" : 1
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "Response when dele success",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "properties" : {
+                    "status" : {
+                      "type" : "string",
+                      "example" : "OK"
+                    },
+                    "data" : {
+                      "type" : "string",
+                      "example" : "car deleted"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      }
+    },
+    "/register" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Create new user(member) data",
+        "operationId" : "createUser",
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/PostUsersRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/CreateUsersResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      }
+    },
+    "/admin" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Create new user(admin) data",
+        "operationId" : "createAdmin",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/PostUsersRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/CreateUsersResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      }
+    },
+    "/login" : {
+      "post" : {
+        "tags" : [ "Users" ],
+        "summary" : "Create new user(admin) data",
+        "operationId" : "Login",
+        "requestBody" : {
+          "$ref" : "#/components/requestBodies/PostUsersRequest"
+        },
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/LoginUsersResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      }
+    },
+    "/whoami" : {
+      "get" : {
+        "tags" : [ "Users" ],
+        "summary" : "Check current user",
+        "operationId" : "checkUser",
+        "security" : [ {
+          "bearerAuth" : [ ]
+        } ],
+        "responses" : {
+          "200" : {
+            "$ref" : "#/components/responses/WhoamiUsersResponse"
+          },
+          "401" : {
+            "$ref" : "#/components/responses/Unauthorized401"
+          },
+          "403" : {
+            "$ref" : "#/components/responses/Unauthorized403"
+          }
+        }
+      }
+    }
+  },
+  "components" : {
+    "responses" : {
+      "PostPutCarResponse" : {
+        "description" : "Response when car data saved successfully",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "OK"
+                },
+                "data" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "example" : 1
+                    },
+                    "image" : {
+                      "type" : "string",
+                      "example" : "https://res.cloudinary.com/dgmknbm2h"
+                    },
+                    "rentPerDay" : {
+                      "type" : "integer",
+                      "example" : 200000
+                    },
+                    "name" : {
+                      "type" : "string",
+                      "example" : "inova"
+                    },
+                    "sizeId" : {
+                      "type" : "integer",
+                      "example" : 2
+                    },
+                    "createdBy" : {
+                      "type" : "integer",
+                      "example" : 1
+                    },
+                    "updatedBy" : {
+                      "type" : "integer",
+                      "nullable" : true,
+                      "example" : 1
+                    },
+                    "deletedBy" : {
+                      "type" : "integer",
+                      "nullable" : true,
+                      "example" : 2
+                    },
+                    "createdAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T05:45:23.052Z"
+                    },
+                    "updatedAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T05:45:23.052Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized401" : {
+        "description" : "Invalid client credentials",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "FAIL"
+                },
+                "error" : {
+                  "type" : "string",
+                  "example" : "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Unauthorized403" : {
+        "description" : "Response when client doesn't have enough previllege",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "FAIL"
+                },
+                "error" : {
+                  "type" : "string",
+                  "example" : "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      },
+      "GetCarsResponse" : {
+        "description" : "Response get all cars data",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "OK"
+                },
+                "data" : {
+                  "type" : "array",
+                  "items" : {
+                    "type" : "object",
+                    "properties" : {
+                      "id" : {
+                        "type" : "integer",
+                        "example" : 1
+                      },
+                      "image" : {
+                        "type" : "string",
+                        "example" : "https://res.cloudinary.com/dgmknbm2h"
+                      },
+                      "rentPerDay" : {
+                        "type" : "integer",
+                        "example" : 200000
+                      },
+                      "name" : {
+                        "type" : "string",
+                        "example" : "inova"
+                      },
+                      "Size" : {
+                        "type" : "object",
+                        "properties" : {
+                          "id" : {
+                            "type" : "integer",
+                            "example" : 1
+                          },
+                          "size" : {
+                            "type" : "string",
+                            "example" : "medium"
+                          }
+                        }
+                      },
+                      "createdBy" : {
+                        "type" : "integer",
+                        "example" : 1
+                      },
+                      "updatedBy" : {
+                        "type" : "integer",
+                        "nullable" : true,
+                        "example" : 1
+                      },
+                      "deletedBy" : {
+                        "type" : "integer",
+                        "nullable" : true,
+                        "example" : 2
+                      },
+                      "createdAt" : {
+                        "type" : "string",
+                        "format" : "date-time",
+                        "example" : "2022-10-21T05:45:23.052Z"
+                      },
+                      "updatedAt" : {
+                        "type" : "string",
+                        "format" : "date-time",
+                        "example" : "2022-10-21T05:45:23.052Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "LoginUsersResponse" : {
+        "description" : "Response on user login",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "OK"
+                },
+                "data" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "example" : 1
+                    },
+                    "email" : {
+                      "type" : "string",
+                      "example" : "example@example"
+                    },
+                    "password" : {
+                      "type" : "string",
+                      "example" : "$2a$10$yrUg8NEZIz7saetKspZGgO/bj6vdoTD0ziC5RJDZ9wzqR9JCRBDhO"
+                    },
+                    "createdAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T03:29:53.973Z"
+                    },
+                    "updatedAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T03:29:53.973Z"
+                    },
+                    "Role" : {
+                      "type" : "string",
+                      "example" : "superadmin"
+                    },
+                    "token" : {
+                      "type" : "string",
+                      "example" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJzdXBlcmFkbWluQGFkbWluIiwicGFzc3dvcmQ"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "CreateUsersResponse" : {
+        "description" : "Response when new user has created",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "OK"
+                },
+                "data" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "example" : 1
+                    },
+                    "email" : {
+                      "type" : "string",
+                      "example" : "example@example"
+                    },
+                    "password" : {
+                      "type" : "string",
+                      "example" : "$2a$10$yrUg8NEZIz7saetKspZGgO/bj6vdoTD0ziC5RJDZ9wzqR9JCRBDhO"
+                    },
+                    "createdAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T03:29:53.973Z"
+                    },
+                    "updatedAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T03:29:53.973Z"
+                    },
+                    "roleId" : {
+                      "type" : "integer",
+                      "example" : 2
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "WhoamiUsersResponse" : {
+        "description" : "Response on check current user",
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "status" : {
+                  "type" : "string",
+                  "example" : "OK"
+                },
+                "data" : {
+                  "type" : "object",
+                  "properties" : {
+                    "id" : {
+                      "type" : "integer",
+                      "example" : 1
+                    },
+                    "email" : {
+                      "type" : "string",
+                      "example" : "example@example"
+                    },
+                    "password" : {
+                      "type" : "string",
+                      "example" : "$2a$10$yrUg8NEZIz7saetKspZGgO/bj6vdoTD0ziC5RJDZ9wzqR9JCRBDhO"
+                    },
+                    "createdAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T03:29:53.973Z"
+                    },
+                    "updatedAt" : {
+                      "type" : "string",
+                      "format" : "date-time",
+                      "example" : "2022-10-21T03:29:53.973Z"
+                    },
+                    "Role" : {
+                      "type" : "string",
+                      "example" : "admin"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "requestBodies" : {
+      "PostPutCarRequest" : {
+        "description" : "Form data format for post / put request",
+        "required" : true,
+        "content" : {
+          "multipart/form-data" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "image" : {
+                  "type" : "string",
+                  "format" : "binary"
+                },
+                "rentPerDay" : {
+                  "type" : "integer",
+                  "example" : 200000
+                },
+                "name" : {
+                  "type" : "string",
+                  "example" : "xenia"
+                },
+                "size" : {
+                  "type" : "string",
+                  "example" : "medium"
+                }
+              }
+            }
+          }
+        }
+      },
+      "PostUsersRequest" : {
+        "description" : "Payload format to create new user",
+        "required" : true,
+        "content" : {
+          "application/json" : {
+            "schema" : {
+              "type" : "object",
+              "properties" : {
+                "email" : {
+                  "type" : "string",
+                  "example" : "user1@user"
+                },
+                "password" : {
+                  "type" : "string",
+                  "example" : "passworduser"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes" : {
+      "bearerAuth" : {
+        "type" : "http",
+        "scheme" : "bearer",
+        "bearerFormat" : "JWT"
+      }
+    }
+  },
+  "servers" : [ {
+    "description" : "SwaggerHub API Auto Mocking",
+    "url" : "https://virtserver.swaggerhub.com/NoFall887/binar-car-management/1.0.0"
+  } ]
+}
