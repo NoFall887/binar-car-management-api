@@ -10,22 +10,39 @@ module.exports = {
       where: {
         id: carId,
       },
+      returning: true,
     });
   },
 
-  delete(carId) {
-    return Cars.destroy({ where: { id: carId } });
+  delete(carId, adminId) {
+    return Cars.update(
+      { deletedBy: adminId },
+      { where: { id: carId }, fields: ["deletedBy"], silent: true }
+    );
   },
 
   findAll() {
-    return Cars.findAll({ include: Size });
+    return Cars.findAll({
+      include: Size,
+      where: {
+        deletedBy: null,
+      },
+    });
   },
 
   findById(carId) {
-    return Cars.findByPk(carId, { include: Size });
+    return Cars.findByPk(carId, {
+      include: Size,
+      where: {
+        deletedBy: null,
+      },
+    });
   },
 
   findBySize(sizeId) {
-    return Cars.findAll({ include: Size, where: { sizeId: sizeId } });
+    return Cars.findAll({
+      include: Size,
+      where: { sizeId: sizeId, deletedBy: null },
+    });
   },
 };

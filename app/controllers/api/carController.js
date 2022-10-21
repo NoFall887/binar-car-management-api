@@ -2,8 +2,13 @@ const carService = require("../../services/carService");
 
 module.exports = {
   create(req, res) {
+    const role = req.user.Role;
+    if (role !== "superadmin" && role !== "admin") {
+      res.status(403).json({ status: "FAIL", error: "Unauthorized" });
+      return;
+    }
     carService
-      .create(req.body, req.file)
+      .create(req.body, req.file, req.user.id)
       .then((result) => {
         res.json({ status: "OK", data: result });
       })
@@ -38,10 +43,16 @@ module.exports = {
   },
 
   update(req, res) {
+    const role = req.user.Role;
+    if (role !== "superadmin" && role !== "admin") {
+      res.status(403).json({ status: "FAIL", error: "Unauthorized" });
+      return;
+    }
     carService
-      .update(req.params.id, req.body, req.file)
+      .update(req.params.id, req.body, req.file, req.user.id)
       .then((result) => {
-        res.json({ status: "OK", data: result });
+        console.log(result);
+        res.json({ status: "OK", data: result[1][0] });
       })
       .catch((err) => {
         console.log(err);
@@ -50,8 +61,13 @@ module.exports = {
   },
 
   delete(req, res) {
+    const role = req.user.Role;
+    if (role !== "superadmin" && role !== "admin") {
+      res.status(403).json({ status: "FAIL", error: "Unauthorized" });
+      return;
+    }
     carService
-      .delete(req.params.id)
+      .delete(req.params.id, req.user.id)
       .then((result) => {
         res.json({ status: "OK", data: result });
       })

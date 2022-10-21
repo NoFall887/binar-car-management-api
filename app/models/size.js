@@ -10,6 +10,9 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Size.hasMany(models.Cars, {
         onDelete: "RESTRICT",
+        foreignKey: {
+          name: "sizeId",
+        },
       });
     }
   }

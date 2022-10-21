@@ -8,18 +8,17 @@ cloudinary.config({
   secure: true,
 });
 
-function upload(img) {
+async function upload(img) {
   const fileBase64 = img.buffer.toString("base64");
-  const file = `data:${file.mimetype};base64,${fileBase64}`;
-  cloudinary.uploader
-    .upload(file)
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.log(err);
-      return err;
-    });
+  const file = `data:${img.mimetype};base64,${fileBase64}`;
+
+  try {
+    const imageUrl = await cloudinary.uploader.upload(file);
+    return imageUrl;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
 }
 
 const sizeMap = {
@@ -38,14 +37,21 @@ const parseBody = (requestBody) => {
 };
 
 module.exports = {
-  create(requestBody, image) {
-    requestBody.photo = upload(image);
-    return carRepository.create(parseBody(requestBody));
+  async create(requestBody, image, adminId) {
+    requestBody.photo = await upload(image);
+    console.log("req", requestBody);
+    return carRepository.create({
+      ...parseBody(requestBody),
+      createdBy: adminId,
+    });
   },
 
-  update(carId, requestBody, image) {
+  update(carId, requestBody, image, adminId) {
     requestBody.photo = upload(image);
-    return carRepository.update(carId, parseBody(requestBody));
+    return carRepository.update(carId, {
+      ...parseBody(requestBody),
+      updatedBy: adminId,
+    });
   },
 
   get() {
@@ -56,7 +62,7 @@ module.exports = {
     return carRepository.findById(carId);
   },
 
-  delete(carId) {
-    return carRepository.delete(carId);
+  delete(carId, adminId) {
+    return carRepository.delete(carId, adminId);
   },
 };

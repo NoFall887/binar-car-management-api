@@ -49,17 +49,19 @@ module.exports = {
   },
 
   authorize(req, res, next) {
-    const token = req.headers.authorization.split(" ")[1];
-    if (!token) {
-      res.status(403).json({ status: "FAIL", error: "Unauthorized" });
+    const authHeader = req.headers.authorization;
+
+    if (!authHeader) {
+      res.status(401).json({ status: "FAIL", error: "Unauthorized" });
       return;
     }
+    const token = authHeader.split(" ")[1];
 
     usersService
       .authorize(token)
       .then((user) => {
         if (!user) {
-          res.status(403).json({ status: "FAIL", error: "Unauthorized" });
+          res.status(401).json({ status: "FAIL", error: "Unauthorized" });
           return;
         }
         req.user = user;
@@ -67,7 +69,7 @@ module.exports = {
       })
       .catch((err) => {
         console.log(err);
-        res.status(403).json({ status: "FAIL", error: "Unauthorized" });
+        res.status(401).json({ status: "FAIL", error: "Unauthorized" });
       });
   },
 

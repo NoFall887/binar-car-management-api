@@ -9,6 +9,7 @@ const apiRouter = Router();
 apiRouter.post(
   "/cars",
   upload.single("image"),
+  controller.api.usersController.authorize,
   controller.api.carController.create
 );
 apiRouter.put(
@@ -17,7 +18,11 @@ apiRouter.put(
   upload.single("image"),
   controller.api.carController.update
 );
-apiRouter.get("/cars", controller.api.carController.get);
+apiRouter.get(
+  "/cars",
+  controller.api.usersController.authorize,
+  controller.api.carController.get
+);
 apiRouter.get(
   "/cars/:id",
   controller.api.usersController.authorize,
@@ -29,16 +34,16 @@ apiRouter.delete(
   controller.api.carController.delete
 );
 
-apiRouter.post("users/register", controller.api.usersController.register);
+apiRouter.post("/register", controller.api.usersController.register);
 apiRouter.post(
-  "users/admin",
+  "/admin",
   controller.api.usersController.authorize,
   controller.api.usersController.createAdmin
 );
-apiRouter.post(
-  "users/whoami",
+apiRouter.get(
+  "/whoami",
   controller.api.usersController.authorize,
   controller.api.usersController.whoami
 );
-apiRouter.post("users/login", controller.api.usersController.login);
+apiRouter.post("/login", controller.api.usersController.login);
 module.exports = apiRouter;
