@@ -69,7 +69,7 @@ module.exports = {
     carService
       .delete(req.params.id, req.user.id)
       .then((result) => {
-        res.json({ status: "OK", data: result });
+        res.json({ status: "OK", data: "Car deleted" });
       })
       .catch((err) => {
         console.log(err);
